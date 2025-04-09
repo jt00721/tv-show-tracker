@@ -7,6 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/jt00721/tv-show-tracker/internal/domain"
+	"github.com/jt00721/tv-show-tracker/internal/seed"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -46,6 +47,10 @@ func InitDB() error {
 	if err != nil {
 		log.Fatal("Migration failed:", err)
 		return fmt.Errorf("failed to auto-migrate database models: %w", err)
+	}
+
+	if err := seed.Seed(db); err != nil {
+		return err
 	}
 
 	DB = db
